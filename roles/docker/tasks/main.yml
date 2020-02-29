@@ -1,0 +1,4 @@
+---
+- include_tasks: uninstall_old_versions.yml
+- include_tasks: set_up_the_repository.yml
+- include_tasks: install_docker.yml

@@ -1,0 +1,21 @@
+---
+
+- name: Install mount package
+  apt:
+    name: mount
+
+- name: Disable swap 'swapoff -a'
+  command: swapoff -a
+
+- name: Disable swap in the /etc/fstab file
+  replace:
+    path: /etc/fstab
+    regexp: '(.*swap*.)'
+    replace: '#\1'
+
+- name: Reboot machines
+  reboot:
+    reboot_timeout: 3600
+
+
+

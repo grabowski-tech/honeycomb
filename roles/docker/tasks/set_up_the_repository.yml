@@ -1,0 +1,48 @@
+---
+
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common
+
+# Debian distributions
+# OS requirements (only 64-bit):
+# - Buster 10
+# - Stretch 9 (stable)
+# supported on x86_64 (or amd64)
+# https://docs.docker.com/install/linux/docker-ce/debian/
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: Set up Docker’s stable repository
+  shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  when: ansible_distribution == 'Debian'
+
+# Ubuntu distributions
+# OS requirements (only 64-bit):
+#  - Disco 19.04
+#  - Cosmic 18.10
+#  - Bionic 18.04 (LTS)
+#  - Xenial 16.04 (LTS)
+# supported on x86_64 (or amd64)
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Set up Docker’s stable repository
+  shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  when: ansible_distribution == 'Ubuntu'

@@ -1,0 +1,10 @@
+---
+
+- name: Install docker engine - community
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io

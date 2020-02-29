@@ -1,0 +1,11 @@
+---
+- name: Uninstall old version of Docker
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - docker
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc

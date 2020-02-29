@@ -1,0 +1,29 @@
+---
+- name: Check if kubeadm is installed
+  shell: kubeadm version | grep kubeadm | awk '{print $1}'
+  register: is_kubeadm
+
+- name: Install Kubernetes components
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Hold Kubernetes components
+  shell: "apt-mark hold {{ item }}"
+  loop:
+    - kubelet
+    - kubeadm
+    - kubectl
+  when: is_kubeadm.stdout != 'kubeadm'
+
+- name: Systemctl reload
+  shell: systemctl daemon-reload
+  when: is_kubeadm.stdout != 'kubeadm'
+
+- name: Restart kubelet
+  shell: systemctl restart kubelet
+  when: is_kubeadm.stdout != 'kubeadm'

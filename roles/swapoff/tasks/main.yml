@@ -1,0 +1,7 @@
+---
+- name: Check if swap is enable
+  command: swapon -s
+  register: swap
+
+- include_tasks: disable_swap.yml
+  when: swap.stdout != ''

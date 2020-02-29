@@ -1,0 +1,7 @@
+---
+- name: Check if nftables is installed
+  shell: iptables --version |awk '{gsub(/\(|\)/,"");print $3}'
+  register: iptables
+
+- include_tasks: disable_nf_tables.yml
+  when: iptables.stdout == 'nf_tables'
