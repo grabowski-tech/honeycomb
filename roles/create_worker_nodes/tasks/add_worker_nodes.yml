@@ -1,0 +1,3 @@
+---
+- name: Add worker node
+  shell: "kubeadm join {{ hostvars['node1'].ansible_host }}:6443 --discovery-token {{ hostvars['node1']['token'] }} --discovery-token-ca-cert-hash sha256:{{ hostvars['node1']['hash'] }}"

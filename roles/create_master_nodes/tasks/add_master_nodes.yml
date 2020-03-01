@@ -1,0 +1,12 @@
+---
+- name: Check if cluster exist
+  shell: kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes --no-headers | awk '{print $3}'
+  register: cluster
+
+- name: Initialization Kubernetes Cluster
+  shell: "kubeadm init --pod-network-cidr={{ pod_network }} --apiserver-advertise-address={{ ansible_host }}"
+  when: cluster.stdout != 'master'
+  register: kubeout
+
+- name: Create network configuration
+  shell: kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f {{ podnetwork_yaml_url }}

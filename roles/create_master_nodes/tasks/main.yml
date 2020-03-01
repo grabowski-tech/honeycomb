@@ -1,0 +1,6 @@
+---
+- include_tasks: add_master_nodes.yml
+  when:
+    - inventory_hostname in groups["master_nodes"]
+    - hostvars['node1']['master_is_running'] != 'is running at'
+    - hostvars['node1']['kubedns_is_running'] != 'is running at'

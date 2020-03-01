@@ -1,0 +1,26 @@
+---
+- name: Check that the /etc/kubernetes/admin.conf exists
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: is_admin_conf
+
+- name: Check if Kubernetes master is running
+  shell: kubectl --kubeconfig /etc/kubernetes/admin.conf cluster-info |grep 'Kubernetes master' |awk '{print $3,$4,$5}'
+  register: master_is_running
+  when: is_admin_conf.stat.exists == True
+
+- name: Check if KubeDNS is running
+  shell: kubectl --kubeconfig /etc/kubernetes/admin.conf cluster-info |grep 'KubeDNS' |awk '{print $2,$3,$4}'
+  register: kubedns_is_running
+  when: is_admin_conf.stat.exists == True
+
+- name: Get list of nodes
+  shell: ls /etc/kubernetes/admin.conf && kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes
+  register: list_of_nodes
+  when: is_admin_conf.stat.exists == True
+
+- name: Make variable master_is_running, kubedns_is_running and list_of_nodes persistant
+  set_fact:
+    master_is_running: "{{ master_is_running.stdout | default('') }}"
+    kubedns_is_running: "{{ kubedns_is_running.stdout | default('') }}"
+    list_of_nodes: "{{ list_of_nodes.stdout | default('') }}"

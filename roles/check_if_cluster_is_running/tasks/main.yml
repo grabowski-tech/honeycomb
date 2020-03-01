@@ -1,0 +1,3 @@
+---
+- include_tasks: check_if_cluster_is_running.yml
+  when: inventory_hostname in groups["master_nodes"]

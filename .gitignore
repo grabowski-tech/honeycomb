@@ -1,3 +1,5 @@
 .idea/**
 honeycomb.iml
 **/*.retry
+.vagrant
+*.log

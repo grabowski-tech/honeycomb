@@ -1,0 +1,13 @@
+---
+- include_tasks: get_bootstrap_token.yml
+  when:
+    - inventory_hostname in groups["master_nodes"]
+    - hostvars['node1']['list_of_nodes'].find(ansible_hostname) == -1
+
+- include_tasks: add_worker_nodes.yml
+  when:
+    - inventory_hostname in groups["worker_nodes"]
+    - hostvars['node1']['list_of_nodes'].find(ansible_hostname) == -1
+
+
+

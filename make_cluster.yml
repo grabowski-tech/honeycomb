@@ -1,0 +1,16 @@
+---
+
+- name: Prepare K8S Cluster
+  become: yes
+  hosts: nodes
+  roles:
+    - { role:  swapoff,                     tags: swapoff }
+    - { role:  docker,                      tags: docker }
+    - { role:  disable_nf_tables,           tags: disable_nf_tables }
+    - { role:  kubernetes_components,       tags: kubernetes_components }
+    - { role:  fix_problems_on_vmachines,   tags: fix_problems_on_vmachines}
+    - { role:  check_if_cluster_is_running, tags: check_if_cluster_is_running}
+    - { role:  create_master_nodes,         tags: create_master_nodes }
+    - { role:  create_worker_nodes,         tags: create_worker_nodes }
+    - { role:  prepare_admin_user,          tags: prepare_admin_user }
+
