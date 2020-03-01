@@ -23,6 +23,7 @@
 ```console
 $ git clone https://github.com/grabowski-tech/honeycomb.git
 $ cd honeycomb
-$ ./install.sh```
+$ ./install.sh
+```
 
 #
